@@ -1,10 +1,15 @@
 # Despliegue de Nanki
 
+## ✅ Estado: DESPLEGADO EN PRODUCCIÓN
+- **URL:** https://nankiperu.com (SSL activo, Let's Encrypt, expira 2026-10-01)
+
 ## Servidor Remoto
 - **IP:** 38.250.161.113
 - **Usuario:** root
 - **Ruta:** /var/www/nanki/
 - **Dominio:** nankiperu.com
+- **Base de datos:** MySQL `nanki` (usuario: `nanki_user`)
+- **Apache config:** /etc/apache2/sites-available/nankiperu.com.conf y nankiperu.com-le-ssl.conf
 
 ## Pasos de Despliegue
 
