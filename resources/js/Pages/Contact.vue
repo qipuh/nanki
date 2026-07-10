@@ -1,8 +1,24 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import AppLayout from '../Layouts/AppLayout.vue';
 
 defineOptions({ layout: AppLayout })
+
+const page = usePage();
+
+const form = useForm({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+});
+
+const submit = () => {
+    form.post('/contacto', {
+        preserveScroll: true,
+        onSuccess: () => form.reset(),
+    });
+};
 </script>
 
 <template>
@@ -70,27 +86,41 @@ defineOptions({ layout: AppLayout })
                 <!-- Contact Form (Visual only for now) -->
                 <div class="p-10 md:p-16">
                     <h3 class="text-2xl font-bold font-outfit text-stone-900 mb-6">Envíanos un mensaje</h3>
-                    <form class="space-y-6" @submit.prevent>
+
+                    <div v-if="page.props.flash?.success" class="mb-6 bg-green-50 border border-green-200 text-green-800 rounded-md px-4 py-3 text-sm">
+                        {{ page.props.flash.success }}
+                    </div>
+
+                    <form class="space-y-6" @submit.prevent="submit">
                         <div>
                             <label for="name" class="block text-sm font-medium text-stone-700">Nombre completo</label>
                             <div class="mt-1">
-                                <input type="text" id="name" class="py-3 px-4 block w-full shadow-sm focus:ring-orange-500 focus:border-orange-500 border-stone-300 rounded-md bg-stone-50 border">
+                                <input v-model="form.name" type="text" id="name" required class="py-3 px-4 block w-full shadow-sm focus:ring-orange-500 focus:border-orange-500 border-stone-300 rounded-md bg-stone-50 border">
                             </div>
+                            <p v-if="form.errors.name" class="text-red-600 text-sm mt-1">{{ form.errors.name }}</p>
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium text-stone-700">Correo electrónico</label>
                             <div class="mt-1">
-                                <input type="email" id="email" class="py-3 px-4 block w-full shadow-sm focus:ring-orange-500 focus:border-orange-500 border-stone-300 rounded-md bg-stone-50 border">
+                                <input v-model="form.email" type="email" id="email" required class="py-3 px-4 block w-full shadow-sm focus:ring-orange-500 focus:border-orange-500 border-stone-300 rounded-md bg-stone-50 border">
+                            </div>
+                            <p v-if="form.errors.email" class="text-red-600 text-sm mt-1">{{ form.errors.email }}</p>
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-stone-700">Teléfono (opcional)</label>
+                            <div class="mt-1">
+                                <input v-model="form.phone" type="text" id="phone" class="py-3 px-4 block w-full shadow-sm focus:ring-orange-500 focus:border-orange-500 border-stone-300 rounded-md bg-stone-50 border">
                             </div>
                         </div>
                         <div>
                             <label for="message" class="block text-sm font-medium text-stone-700">Mensaje</label>
                             <div class="mt-1">
-                                <textarea id="message" rows="4" class="py-3 px-4 block w-full shadow-sm focus:ring-orange-500 focus:border-orange-500 border-stone-300 rounded-md bg-stone-50 border"></textarea>
+                                <textarea v-model="form.message" id="message" rows="4" required class="py-3 px-4 block w-full shadow-sm focus:ring-orange-500 focus:border-orange-500 border-stone-300 rounded-md bg-stone-50 border"></textarea>
                             </div>
+                            <p v-if="form.errors.message" class="text-red-600 text-sm mt-1">{{ form.errors.message }}</p>
                         </div>
                         <div>
-                            <button type="button" class="w-full inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                            <button type="submit" :disabled="form.processing" class="w-full inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors disabled:opacity-50">
                                 Enviar Mensaje
                             </button>
                         </div>

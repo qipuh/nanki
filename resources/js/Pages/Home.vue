@@ -3,6 +3,13 @@ import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '../Layouts/AppLayout.vue';
 
 defineOptions({ layout: AppLayout })
+
+defineProps({
+    products: {
+        type: Array,
+        default: () => [],
+    },
+});
 </script>
 
 <template>
@@ -95,42 +102,24 @@ defineOptions({ layout: AppLayout })
                 </Link>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <!-- Product Card 1 -->
-                <div class="group cursor-pointer border border-stone-200 hover:border-orange-500 transition-colors bg-white shadow-sm hover:shadow-md">
-                    <div class="relative bg-stone-100 h-64 flex items-center justify-center">
-                        <div class="absolute inset-4 border border-dashed border-stone-300"></div>
-                        <span class="text-stone-400 font-bold text-lg uppercase tracking-widest font-outfit z-10 group-hover:text-orange-500 transition-colors">Ají Charapita</span>
+            <div v-if="products.length" class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div v-for="product in products" :key="product.id"
+                    class="group cursor-pointer border border-stone-200 hover:border-orange-500 transition-colors bg-white shadow-sm hover:shadow-md">
+                    <div class="relative bg-stone-100 h-64 flex items-center justify-center overflow-hidden">
+                        <img v-if="product.image" :src="`/storage/${product.image}`" :alt="product.name" class="h-full w-full object-cover" />
+                        <template v-else>
+                            <div class="absolute inset-4 border border-dashed border-stone-300"></div>
+                            <span class="text-stone-400 font-bold text-lg uppercase tracking-widest font-outfit z-10 text-center px-4 group-hover:text-orange-500 transition-colors">{{ product.name }}</span>
+                        </template>
                     </div>
                     <div class="p-8">
-                        <h3 class="text-lg font-bold text-black uppercase tracking-wider mb-2">Tradición Pura</h3>
-                        <p class="text-stone-600 font-light text-sm">El inconfundible picor de la selva. 100% fruta entera de origen loretano.</p>
+                        <h3 class="text-lg font-bold text-black uppercase tracking-wider mb-2">{{ product.tagline ?? product.name }}</h3>
+                        <p class="text-stone-600 font-light text-sm">{{ product.description }}</p>
                     </div>
                 </div>
-
-                <!-- Product Card 2 -->
-                <div class="group cursor-pointer border border-stone-200 hover:border-orange-500 transition-colors bg-white shadow-sm hover:shadow-md">
-                    <div class="relative bg-stone-100 h-64 flex items-center justify-center">
-                        <div class="absolute inset-4 border border-dashed border-stone-300"></div>
-                        <span class="text-stone-400 font-bold text-lg uppercase tracking-widest font-outfit z-10 group-hover:text-orange-500 transition-colors">Ají Dulce</span>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-lg font-bold text-black uppercase tracking-wider mb-2">Suave y Aromático</h3>
-                        <p class="text-stone-600 font-light text-sm">Esencia amazónica sin picor, perfecta para realzar el sabor de cualquier plato.</p>
-                    </div>
-                </div>
-
-                <!-- Product Card 3 -->
-                <div class="group cursor-pointer border border-stone-200 hover:border-orange-500 transition-colors bg-white shadow-sm hover:shadow-md">
-                    <div class="relative bg-stone-100 h-64 flex items-center justify-center">
-                        <div class="absolute inset-4 border border-dashed border-stone-300"></div>
-                        <span class="text-stone-400 font-bold text-lg uppercase tracking-widest font-outfit z-10 text-center px-4 group-hover:text-orange-500 transition-colors">Charapita & Maracuyá</span>
-                    </div>
-                    <div class="p-8">
-                        <h3 class="text-lg font-bold text-black uppercase tracking-wider mb-2">Fusión Tropical</h3>
-                        <p class="text-stone-600 font-light text-sm">Una explosión que combina el picante intenso con un vibrante toque ácido.</p>
-                    </div>
-                </div>
+            </div>
+            <div v-else class="text-center text-stone-500 py-8">
+                Catálogo en construcción. Pronto verás nuestras salsas amazónicas aquí.
             </div>
 
             <div class="mt-12 text-center md:hidden">

@@ -1,8 +1,12 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 
 const isMenuOpen = ref(false);
+const page = usePage();
+
+const siteName = computed(() => page.props.site?.name ?? 'Nanki');
+const siteLogo = computed(() => page.props.site?.logo ? `/storage/${page.props.site.logo}` : null);
 
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
@@ -17,7 +21,8 @@ const toggleMenu = () => {
                 <div class="flex justify-between h-20">
                     <div class="flex items-center">
                         <Link href="/" class="flex-shrink-0 flex items-center">
-                            <span class="text-white text-3xl font-bold tracking-wider font-outfit">NANKI</span>
+                            <img v-if="siteLogo" :src="siteLogo" :alt="siteName" class="h-12 w-auto" />
+                            <span v-else class="text-white text-3xl font-bold tracking-wider font-outfit uppercase">{{ siteName }}</span>
                         </Link>
                     </div>
                     
@@ -83,7 +88,7 @@ const toggleMenu = () => {
             <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="col-span-1 md:col-span-1">
-                        <span class="text-3xl font-bold tracking-wider font-outfit text-orange-500 mb-4 block">NANKI</span>
+                        <span class="text-3xl font-bold tracking-wider font-outfit text-orange-500 mb-4 block uppercase">{{ siteName }}</span>
                         <p class="text-stone-400 text-sm">Tradición, naturaleza y sabor en cada plato. La Amazonía en tu mesa.</p>
                     </div>
                     <div>
