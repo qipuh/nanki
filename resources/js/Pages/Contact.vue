@@ -26,7 +26,7 @@ const submit = () => {
     <div class="bg-stone-50 py-20 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h1 class="text-4xl font-extrabold tracking-tight text-stone-900 sm:text-5xl font-outfit uppercase">
+                <h1 class="text-4xl font-extrabold tracking-wide text-stone-900 sm:text-5xl font-outfit">
                     Contacto
                 </h1>
                 <p class="mt-4 text-xl text-stone-600">
@@ -40,7 +40,7 @@ const submit = () => {
                     <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 2px, transparent 2px), radial-gradient(#fff 2px, transparent 2px); background-size: 32px 32px; background-position: 0 0, 16px 16px;"></div>
                     
                     <div class="relative z-10">
-                        <h2 class="text-3xl font-bold font-outfit mb-8">Información de Contacto</h2>
+                        <h2 class="text-3xl font-bold font-outfit tracking-wide mb-8">Información de Contacto</h2>
                         
                         <div class="space-y-8">
                             <div class="flex items-start">

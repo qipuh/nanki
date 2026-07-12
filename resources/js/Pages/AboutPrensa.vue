@@ -11,7 +11,7 @@ defineOptions({ layout: AppLayout })
     <div class="bg-stone-50 py-20 min-h-screen">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h1 class="text-4xl font-extrabold tracking-tight text-stone-900 sm:text-5xl font-outfit uppercase">
+                <h1 class="text-4xl font-extrabold tracking-wide text-stone-900 sm:text-5xl font-outfit">
                     En los Medios
                 </h1>
                 <p class="mt-4 text-xl text-stone-600">
@@ -31,7 +31,7 @@ defineOptions({ layout: AppLayout })
                     </div>
                     <div class="p-8 md:p-12 md:w-2/3 flex flex-col justify-center">
                         <div class="text-sm font-semibold text-green-600 tracking-wider uppercase mb-2">Revista Nº 69 | Lima, Perú</div>
-                        <h2 class="text-2xl font-bold font-outfit text-stone-900 mb-4">Emprendedores apuestan por la industrialización de ají charapita</h2>
+                        <h2 class="text-2xl font-bold font-outfit tracking-wide text-stone-900 mb-4">Emprendedores apuestan por la industrialización de ají charapita</h2>
                         <div class="prose prose-stone text-stone-600 mb-6">
                             <p>
                                 Hace siete años, los esposos <strong>Wilfredo Barrantes Nuñera</strong> y <strong>Juana Castro Gómez</strong> decidieron incursionar en el cultivo de cacao y limón Tahití, asociado con especies forestales, así como de ají charapita, en su fundo Rosita Sofía, de 43 hectáreas, mediante prácticas ecológicas.
@@ -64,7 +64,7 @@ defineOptions({ layout: AppLayout })
                     </div>
                     <div class="p-8 md:p-12 md:w-2/3 flex flex-col justify-center">
                         <div class="text-sm font-semibold text-green-600 tracking-wider uppercase mb-2">Evento Destacado</div>
-                        <h2 class="text-2xl font-bold font-outfit text-stone-900 mb-4">Negocio picante en Expoamazónica</h2>
+                        <h2 class="text-2xl font-bold font-outfit tracking-wide text-stone-900 mb-4">Negocio picante en Expoamazónica</h2>
                         <div class="prose prose-stone text-stone-600 mb-6">
                             <p>
                                 Esposos Juana Castro Gómez y Wilfredo Barrantes Nureña muestran la variedad de productos elaborados a base de ají charapita, los cuales vienen posicionándose con éxito en el mercado regional a poco tiempo de su lanzamiento.

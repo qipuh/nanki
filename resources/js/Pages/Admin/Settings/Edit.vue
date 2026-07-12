@@ -1,6 +1,7 @@
 <script setup>
 import { Head, useForm } from '@inertiajs/vue3';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
+import ImagePicker from '../../../Components/ImagePicker.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -23,7 +24,7 @@ const submit = () => {
 <template>
     <Head title="Admin - Marca" />
 
-    <h1 class="text-2xl font-bold text-stone-900 font-outfit mb-6">Marca</h1>
+    <h1 class="text-2xl font-bold text-stone-900 mb-6">Marca</h1>
 
     <form @submit.prevent="submit" class="bg-white rounded-lg shadow p-8 max-w-2xl space-y-6">
         <div>
@@ -34,11 +35,8 @@ const submit = () => {
 
         <div>
             <label class="block text-sm font-medium text-stone-700 mb-2">Logo</label>
-            <div class="flex items-center gap-4 mb-3">
-                <img v-if="settings.site_logo" :src="`/storage/${settings.site_logo}`" class="h-16 w-16 object-contain bg-stone-100 rounded p-1" />
-                <span v-else class="text-stone-400 text-sm">Sin logo (se muestra el nombre en texto)</span>
-            </div>
-            <input @input="form.logo = $event.target.files[0]" type="file" accept="image/*" class="w-full text-sm" />
+            <p v-if="!settings.site_logo && !form.logo" class="text-stone-400 text-sm mb-2">Sin logo (se muestra el nombre en texto)</p>
+            <ImagePicker v-model="form.logo" :current="settings.site_logo" image-class="h-16 w-16 object-contain bg-stone-100 rounded p-1" />
             <p v-if="form.errors.logo" class="text-red-600 text-sm mt-1">{{ form.errors.logo }}</p>
 
             <label v-if="settings.site_logo" class="flex items-center gap-2 mt-3">

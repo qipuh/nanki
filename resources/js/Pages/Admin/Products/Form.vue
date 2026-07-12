@@ -2,6 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import AdminLayout from '../../../Layouts/AdminLayout.vue';
+import ImagePicker from '../../../Components/ImagePicker.vue';
 
 defineOptions({ layout: AdminLayout });
 
@@ -31,7 +32,7 @@ const submit = () => {
 <template>
     <Head :title="isEdit ? 'Admin - Editar producto' : 'Admin - Nuevo producto'" />
 
-    <h1 class="text-2xl font-bold text-stone-900 font-outfit mb-6">
+    <h1 class="text-2xl font-bold text-stone-900 mb-6">
         {{ isEdit ? 'Editar producto' : 'Nuevo producto' }}
     </h1>
 
@@ -65,8 +66,7 @@ const submit = () => {
 
         <div>
             <label class="block text-sm font-medium text-stone-700 mb-1">Imagen</label>
-            <img v-if="product?.image" :src="`/storage/${product.image}`" class="h-20 w-20 object-cover rounded mb-2" />
-            <input @input="form.image = $event.target.files[0]" type="file" accept="image/*" class="w-full text-sm" />
+            <ImagePicker v-model="form.image" :current="product?.image" image-class="h-32 w-32 object-cover rounded" />
             <p v-if="form.errors.image" class="text-red-600 text-sm mt-1">{{ form.errors.image }}</p>
         </div>
 

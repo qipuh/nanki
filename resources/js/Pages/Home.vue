@@ -1,100 +1,116 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import { computed, reactive, inject, ref } from 'vue';
 import AppLayout from '../Layouts/AppLayout.vue';
+import HeroSlider from '../Components/HeroSlider.vue';
+import KeneMotif from '../Components/KeneMotif.vue';
+import BrandCaption from '../Components/BrandCaption.vue';
+import ImageGallery from '../Components/ImageGallery.vue';
+import EditableText from '../Components/Editable/EditableText.vue';
+import EditableImage from '../Components/Editable/EditableImage.vue';
 
 defineOptions({ layout: AppLayout })
 
-defineProps({
+const props = defineProps({
+    slides: {
+        type: Array,
+        default: () => [],
+    },
     products: {
         type: Array,
         default: () => [],
     },
+    gallery: {
+        type: Array,
+        default: () => [],
+    },
+    content: {
+        type: Object,
+        default: () => ({}),
+    },
 });
+
+const galleryImages = computed(() => props.gallery.map((item) => ({
+    src: `/storage/${item.image}`,
+    alt: item.alt ?? '',
+    caption: item.caption ?? '',
+})));
+
+const c = reactive({ ...props.content });
+
+const img = (key, fallback) => c[key] ? `/storage/${c[key]}` : fallback;
+
+const editMode = inject('editMode', ref(false));
 </script>
 
 <template>
     <Head title="Inicio - Nanki" />
 
-    <!-- Hero Section Minimalista (Imagen Nanki) -->
-    <div class="relative bg-white overflow-hidden min-h-[600px] flex flex-col justify-center border-b border-stone-200">
-        <!-- Fondo Patrón Rombos SVG sutil -->
-        <div class="absolute inset-0 pointer-events-none" 
-             style="background-image: url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' stroke=\'%23f3f4f6\' stroke-width=\'1.5\'%3E%3Cpath d=\'M40 0l40 40-40 40L0 40z\'/%3E%3Cpath d=\'M40 15l25 25-25 25L15 40z\'/%3E%3C/g%3E%3C/svg%3E'); background-size: 80px 80px; background-position: center;">
-        </div>
+    <!-- Hero Slider -->
+    <HeroSlider :slides="slides" />
 
-        <div class="relative max-w-7xl mx-auto py-32 px-4 sm:py-40 sm:px-6 lg:px-8 flex flex-col items-center text-center z-10 w-full">
-            
-            <!-- Logo Text -->
-            <h1 class="text-7xl sm:text-8xl md:text-[10rem] font-black tracking-tight text-black font-outfit uppercase leading-none">
-                NANKI
-            </h1>
-            
-            <!-- Orange Divider -->
-            <div class="w-full max-w-[280px] sm:max-w-[400px] md:max-w-[500px] h-1 bg-orange-500 mt-4 mb-8"></div>
-            
-            <!-- Subtitle -->
-            <p class="text-sm sm:text-lg text-stone-500 font-medium tracking-[0.4em] uppercase">
-                Loreto, Perú
-            </p>
-
-            <div class="mt-16 sm:flex sm:justify-center gap-6">
-                <Link href="/productos" class="flex items-center justify-center px-8 py-4 border border-orange-500 text-sm font-medium rounded-none text-white bg-orange-500 hover:bg-orange-600 hover:border-orange-600 transition-all uppercase tracking-widest shadow-sm">
-                    Explorar
-                </Link>
-                <Link href="/nosotros/historia" class="flex items-center justify-center px-8 py-4 border border-stone-300 text-sm font-medium rounded-none text-stone-600 hover:bg-stone-50 hover:text-black transition-all uppercase tracking-widest mt-4 sm:mt-0 shadow-sm bg-white">
-                    Nuestra Raíz
-                </Link>
-            </div>
-        </div>
-    </div>
+    <!-- Separador Kené -->
+    <div class="w-full h-[250px] max-h-[250px] bg-white opacity-15"
+        style="background-image: url('/images/patron.png'); background-repeat: repeat-x; background-size: auto 250px; background-position: top center;
+               -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 90%);
+               mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 90%);"></div>
 
     <!-- About Snippet -->
-    <section class="py-24 bg-stone-50 relative overflow-hidden">
+    <section class="py-24 relative overflow-hidden -mt-64">
+        <KeneMotif class="hidden md:block absolute top-16 -left-6 w-28 h-28 text-stone-900 opacity-[0.06] animate-float pointer-events-none select-none" />
+        <KeneMotif class="hidden md:block absolute bottom-10 right-8 w-20 h-20 text-orange-500 opacity-[0.08] animate-float-slow pointer-events-none select-none" style="animation-delay: 1.2s" />
+        <EditableImage setting-key="home_about_float_image" :src="img('home_about_float_image', '/images/1.png')"
+            wrapper-class="hidden 2xl:block absolute top-20 right-6 w-36 animate-float" img-class="w-full drop-shadow-xl pointer-events-none select-none" style="animation-delay: 0.4s" />
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="lg:grid lg:grid-cols-2 lg:gap-20 items-center">
                 <div class="relative group p-4">
                     <!-- Marco sobrio -->
                     <div class="absolute inset-0 bg-stone-200 translate-x-4 translate-y-4"></div>
-                    <div class="relative bg-white h-full min-h-[400px] flex items-center justify-center p-8 border border-stone-200 shadow-sm">
-                        <div class="absolute inset-0 opacity-5" 
-                             style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0,30 L30,0 L60,30 L30,60 Z M15,30 L30,15 L45,30 L30,45 Z\' stroke=\'%23000000\' stroke-width=\'2\' fill=\'none\'/%3E%3C/svg%3E');">
-                        </div>
-                        <div class="text-center relative z-10">
-                            <span class="text-6xl font-outfit font-black text-black">NANKI</span>
-                            <div class="h-0.5 w-full bg-orange-500 my-4"></div>
-                            <p class="text-stone-500 mt-2 text-sm font-medium uppercase tracking-[0.3em]">Loreto, Perú</p>
-                        </div>
+                    <div class="relative h-full min-h-[400px] border border-stone-200 shadow-sm overflow-hidden">
+                        <EditableImage setting-key="home_about_image" :src="img('home_about_image', '/images/1.png')"
+                            alt="Ají charapita" wrapper-class="absolute inset-0" img-class="w-full h-full object-cover" />
+                        <BrandCaption />
                     </div>
                 </div>
                 <div class="mt-16 lg:mt-0">
-                    <h2 class="text-3xl font-black text-black tracking-tight sm:text-4xl font-outfit uppercase">
-                        El Espíritu del <span class="text-orange-500">Bosque</span>
+                    <h2 class="text-3xl font-black text-black tracking-wide sm:text-4xl font-outfit">
+                        <EditableText setting-key="home_about_title" v-model="c.home_about_title" />
+                        <EditableText setting-key="home_about_title_highlight" v-model="c.home_about_title_highlight" class="text-orange-500" />
                     </h2>
-                    <div class="w-16 h-1 bg-orange-500 mt-6 mb-8"></div>
-                    <p class="text-lg text-stone-700 mb-6 font-light">
-                        Nanki rinde homenaje a la profunda riqueza cultural de Iquitos. Nuestras salsas de <span class="font-medium text-black">Ají Charapita</span> y <span class="font-medium text-black">Ají Dulce</span> son un viaje sensorial a la selva.
-                    </p>
-                    <p class="text-lg text-stone-600 mb-10 font-light">
-                        Inspirados en la geometría sagrada del Kené, elaboramos cada producto respetando la tierra y la tradición oral que nos conecta con la naturaleza.
-                    </p>
-                    <Link href="/nosotros/historia" class="inline-flex items-center text-orange-600 font-medium hover:text-orange-700 uppercase tracking-widest text-sm transition-colors group">
-                        Conoce más sobre nosotros
+                    <div class="flex items-center gap-3 mt-6 mb-8">
+                        <span class="w-10 h-px bg-orange-500"></span>
+                        <KeneMotif class="w-5 h-5 text-orange-500" />
+                        <span class="w-10 h-px bg-orange-500"></span>
+                    </div>
+                    <EditableText setting-key="home_about_paragraph_1" v-model="c.home_about_paragraph_1" tag="p" class="block text-lg text-stone-700 mb-6 font-light" />
+                    <EditableText setting-key="home_about_paragraph_2" v-model="c.home_about_paragraph_2" tag="p" class="block text-lg text-stone-600 mb-10 font-light" />
+                    <component :is="editMode ? 'span' : Link" :href="editMode ? undefined : (c.home_about_link_url || '/nosotros/historia')"
+                        class="inline-flex items-center text-orange-600 font-medium hover:text-orange-700 uppercase tracking-widest text-sm transition-colors group">
+                        <EditableText setting-key="home_about_link_text" v-model="c.home_about_link_text" />
                         <svg class="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </Link>
+                    </component>
                 </div>
             </div>
         </div>
     </section>
-
+    <div class="hidden md:block relative z-20 max-w-7xl mx-auto px-6">
+        <EditableImage setting-key="home_jar_float_image" :src="img('home_jar_float_image', '/images/5.png')"
+            wrapper-class="absolute -top-14 left-0 -translate-x-[calc(50%+50px)] w-40 animate-float" img-class="w-full drop-shadow-1xl pointer-events-none select-none" />
+    </div>
     <!-- Productos - Estilo Galería Limpia -->
-    <section class="py-24 bg-white relative border-t border-stone-100">
+    <section class="py-24 bg-white relative border-t border-stone-100 overflow-hidden">
+        <KeneMotif class="hidden lg:block absolute top-24 right-10 w-24 h-24 text-orange-500 opacity-[0.07] animate-float pointer-events-none select-none" style="animation-delay: 0.6s" />
+        <KeneMotif class="hidden lg:block absolute bottom-16 -left-8 w-32 h-32 text-stone-900 opacity-[0.05] animate-float-slow pointer-events-none select-none" style="animation-delay: 2s" />
+        
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16">
                 <div class="max-w-2xl">
-                    <h2 class="text-orange-500 font-semibold tracking-[0.2em] uppercase text-sm mb-4">La Cosecha</h2>
-                    <p class="text-3xl font-black text-black sm:text-4xl font-outfit uppercase tracking-tight">
-                        Fuego Amazónico
-                    </p>
+                    <h2 class="text-orange-500 font-semibold tracking-[0.2em] uppercase text-sm mb-4 flex items-center gap-2">
+                        <KeneMotif class="w-4 h-4" />
+                        <EditableText setting-key="home_products_eyebrow" v-model="c.home_products_eyebrow" />
+                    </h2>
+                    <EditableText setting-key="home_products_title" v-model="c.home_products_title" tag="p" class="block text-3xl font-black text-black sm:text-4xl font-outfit tracking-tight" />
                 </div>
                 <Link href="/productos" class="hidden md:inline-flex items-center text-black font-medium uppercase tracking-widest text-sm hover:text-orange-500 transition-colors group">
                     Ver Todos
@@ -130,35 +146,57 @@ defineProps({
         </div>
     </section>
 
+    <!-- Galería con Lightbox -->
+    <section v-if="galleryImages.length" class="py-20 bg-stone-50 border-t border-stone-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+            <h2 class="text-orange-500 font-semibold tracking-[0.2em] uppercase text-sm mb-4 flex items-center gap-2">
+                <KeneMotif class="w-4 h-4" />
+                Galería
+            </h2>
+            <p class="text-3xl font-black text-black sm:text-4xl font-outfit tracking-wide">
+                De la Chacra al Frasco
+            </p>
+        </div>
+
+        <ImageGallery :images="galleryImages" />
+    </section>
+
     <!-- Cultural Identity Section (Kené Pattern Theme) -->
     <section class="py-24 bg-stone-900 text-white relative overflow-hidden">
-        <!-- Kené laberinto pattern sobrio -->
-        <div class="absolute inset-0 opacity-5" 
-             style="background-image: url('data:image/svg+xml,%3Csvg width=\'120\' height=\'120\' viewBox=\'0 0 120 120\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M10,10 h100 v100 h-100 v-100 M30,30 h60 v60 h-60 v-60 M50,50 h20 v20 h-20 v-20\' stroke=\'%23ffffff\' stroke-width=\'2\' fill=\'none\' stroke-linejoin=\'miter\'/%3E%3C/svg%3E'); background-size: 60px 60px;">
+        <!-- Textura Kené real -->
+        <div class="absolute inset-0 opacity-[0.08]"
+             style="background-image: url('/images/bg.jpg'); background-size: 400px; background-repeat: repeat;">
         </div>
-        
+
+        <KeneMotif class="hidden md:block absolute top-10 right-16 w-20 h-20 text-orange-500 opacity-10 animate-float pointer-events-none select-none" style="animation-delay: 0.9s" />
+        <KeneMotif class="hidden md:block absolute bottom-8 left-10 w-16 h-16 text-white opacity-10 animate-float-slow pointer-events-none select-none" style="animation-delay: 1.6s" />
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="bg-black/80 backdrop-blur-sm border border-stone-800 p-10 md:p-16">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                     <div>
-                        <div class="inline-block border border-orange-500 text-orange-500 px-4 py-1 mb-6 uppercase tracking-widest text-xs font-medium">Nuestra Esencia</div>
-                        <h2 class="text-3xl md:text-4xl font-black font-outfit mb-6 uppercase tracking-tight text-white">
-                            El Arte Kené<br/>En Tu Mesa
+                        <div class="inline-flex items-center gap-2 border border-orange-500 text-orange-500 px-4 py-1 mb-6 uppercase tracking-widest text-xs font-medium">
+                            <KeneMotif class="w-3.5 h-3.5" />
+                            <EditableText setting-key="home_kene_badge" v-model="c.home_kene_badge" />
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-black font-outfit mb-6 tracking-wide text-white flex items-center gap-4">
+                            <KeneMotif class="w-8 h-8 text-orange-500 shrink-0 hidden sm:block" />
+                            <span>
+                                <EditableText setting-key="home_kene_title_line1" v-model="c.home_kene_title_line1" /><br/>
+                                <EditableText setting-key="home_kene_title_line2" v-model="c.home_kene_title_line2" />
+                            </span>
                         </h2>
-                        <p class="text-lg text-stone-300 mb-6 font-light leading-relaxed">
-                            Nuestros empaques y filosofía se inspiran en los telares y el diseño de los pueblos Shipibo-Konibo. 
-                        </p>
-                        <p class="text-base text-stone-400 leading-relaxed border-l-2 border-orange-500 pl-4 font-light">
-                            Las líneas sinuosas y patrones geométricos no son solo adornos; representan los ríos, la energía de las plantas maestras y la cosmovisión de una selva viva.
-                        </p>
+                        <EditableText setting-key="home_kene_paragraph_1" v-model="c.home_kene_paragraph_1" tag="p" class="block text-lg text-stone-300 mb-6 font-light leading-relaxed" />
+                        <EditableText setting-key="home_kene_paragraph_2" v-model="c.home_kene_paragraph_2" tag="p" class="block text-base text-stone-400 leading-relaxed border-l-2 border-orange-500 pl-4 font-light" />
                     </div>
                     <div class="flex justify-center relative">
-                        <div class="w-full max-w-xs aspect-square bg-stone-900 border border-stone-800 flex flex-col items-center justify-center p-8 relative">
-                            <!-- Simulating a woven pattern visually, completely sober -->
-                            <div class="absolute inset-6 border border-stone-700 rotate-45"></div>
-                            <div class="absolute inset-10 border border-stone-700 -rotate-45"></div>
-                            <div class="w-8 h-8 bg-orange-500 z-10 relative"></div>
-                            <span class="text-stone-500 font-medium mt-6 z-10 tracking-[0.2em] uppercase text-xs">Iquitos</span>
+                        <div class="w-full max-w-xs relative overflow-hidden">
+                            <EditableImage setting-key="home_kene_box_image" :src="img('home_kene_box_image', '/images/molido.png')"
+                                alt="Salsa de ají charapita Nanki" wrapper-class="relative" img-class="w-full h-auto block" />
+                            <div class="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/80 via-black/30 to-transparent pt-16 pb-5 px-4 text-center">
+                                <EditableText setting-key="home_kene_box_label" v-model="c.home_kene_box_label"
+                                    class="text-white font-medium tracking-[0.2em] uppercase text-xs" />
+                            </div>
                         </div>
                     </div>
                 </div>

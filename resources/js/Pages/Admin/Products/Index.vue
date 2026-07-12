@@ -19,7 +19,7 @@ const destroy = (product) => {
     <Head title="Admin - Productos" />
 
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-stone-900 font-outfit">Productos</h1>
+        <h1 class="text-2xl font-bold text-stone-900">Productos</h1>
         <Link href="/admin/productos/create" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium rounded-md transition-colors">
             + Nuevo producto
         </Link>

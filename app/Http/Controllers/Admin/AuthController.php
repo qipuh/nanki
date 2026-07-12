@@ -11,8 +11,12 @@ use Inertia\Response;
 
 class AuthController extends Controller
 {
-    public function create(): Response
+    public function create(): Response|RedirectResponse
     {
+        if (Auth::check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
         return Inertia::render('Admin/Login');
     }
 
@@ -31,7 +35,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.products.index'));
+        return redirect()->intended(route('admin.dashboard'));
     }
 
     public function destroy(Request $request): RedirectResponse

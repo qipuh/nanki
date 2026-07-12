@@ -24,7 +24,7 @@ const destroy = (message) => {
 <template>
     <Head title="Admin - Mensajes de contacto" />
 
-    <h1 class="text-2xl font-bold text-stone-900 font-outfit mb-6">Mensajes de contacto</h1>
+    <h1 class="text-2xl font-bold text-stone-900 mb-6">Mensajes de contacto</h1>
 
     <div class="space-y-3">
         <div v-for="message in messages" :key="message.id"

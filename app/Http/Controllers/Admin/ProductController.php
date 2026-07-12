@@ -82,7 +82,7 @@ class ProductController extends Controller
             'price' => ['nullable', 'numeric', 'min:0'],
             'active' => ['boolean'],
             'order' => ['nullable', 'integer', 'min:0'],
-            'image' => ['nullable', 'image', 'max:4096'],
+            'image' => ['nullable', 'image', 'max:12288'],
         ]);
     }
 }
