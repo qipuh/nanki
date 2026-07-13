@@ -13,6 +13,7 @@ const form = useForm({
     site_name: props.settings.site_name,
     logo: null,
     remove_logo: false,
+    whatsapp_number: props.settings.whatsapp_number ?? '',
     _method: 'post',
 });
 
@@ -43,6 +44,13 @@ const submit = () => {
                 <input v-model="form.remove_logo" type="checkbox" class="rounded border-stone-300 text-orange-600 focus:ring-orange-500" />
                 <span class="text-sm text-stone-600">Quitar logo actual</span>
             </label>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-stone-700 mb-1">WhatsApp para pedidos</label>
+            <input v-model="form.whatsapp_number" type="text" placeholder="51987654321" class="w-full py-2.5 px-3 border border-stone-300 rounded-md focus:ring-orange-500 focus:border-orange-500" />
+            <p class="text-xs text-stone-400 mt-1">Con código de país, solo números (ej. 51987654321). Aquí llegan los pedidos del carrito.</p>
+            <p v-if="form.errors.whatsapp_number" class="text-red-600 text-sm mt-1">{{ form.errors.whatsapp_number }}</p>
         </div>
 
         <div class="pt-2">

@@ -18,6 +18,7 @@ class SettingController extends Controller
             'settings' => [
                 'site_name' => Setting::get('site_name', 'Nanki'),
                 'site_logo' => Setting::get('site_logo'),
+                'whatsapp_number' => Setting::get('whatsapp_number'),
             ],
         ]);
     }
@@ -28,9 +29,11 @@ class SettingController extends Controller
             'site_name' => ['required', 'string', 'max:255'],
             'logo' => ['nullable', 'image', 'max:2048'],
             'remove_logo' => ['boolean'],
+            'whatsapp_number' => ['nullable', 'string', 'max:20'],
         ]);
 
         Setting::set('site_name', $data['site_name']);
+        Setting::set('whatsapp_number', $data['whatsapp_number'] ?? null);
 
         if ($request->hasFile('logo')) {
             $current = Setting::get('site_logo');

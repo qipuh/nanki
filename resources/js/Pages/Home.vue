@@ -8,6 +8,7 @@ import BrandCaption from '../Components/BrandCaption.vue';
 import ImageGallery from '../Components/ImageGallery.vue';
 import EditableText from '../Components/Editable/EditableText.vue';
 import EditableImage from '../Components/Editable/EditableImage.vue';
+import { addToCart } from '../cart';
 
 defineOptions({ layout: AppLayout })
 
@@ -37,6 +38,14 @@ const galleryImages = computed(() => props.gallery.map((item) => ({
 })));
 
 const c = reactive({ ...props.content });
+
+const justAdded = reactive(new Set());
+
+const add = (product) => {
+    addToCart(product);
+    justAdded.add(product.id);
+    setTimeout(() => justAdded.delete(product.id), 1500);
+};
 
 const img = (key, fallback) => c[key] ? `/storage/${c[key]}` : fallback;
 
@@ -120,17 +129,27 @@ const editMode = inject('editMode', ref(false));
             
             <div v-if="products.length" class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div v-for="product in products" :key="product.id"
-                    class="group cursor-pointer border border-stone-200 hover:border-orange-500 transition-colors bg-white shadow-sm hover:shadow-md">
+                    class="group border border-stone-200 hover:border-orange-500 transition-colors bg-white shadow-sm hover:shadow-md">
                     <div class="relative bg-stone-100 h-64 flex items-center justify-center overflow-hidden">
                         <img v-if="product.image" :src="`/storage/${product.image}`" :alt="product.name" class="h-full w-full object-cover" />
                         <template v-else>
                             <div class="absolute inset-4 border border-dashed border-stone-300"></div>
                             <span class="text-stone-400 font-bold text-lg uppercase tracking-widest font-outfit z-10 text-center px-4 group-hover:text-orange-500 transition-colors">{{ product.name }}</span>
                         </template>
+                        <span v-if="product.price" class="absolute top-3 right-3 bg-stone-900/90 text-white text-sm font-bold px-3 py-1.5 shadow-sm">
+                            S/ {{ product.price }}
+                        </span>
                     </div>
                     <div class="p-8">
                         <h3 class="text-lg font-bold text-black uppercase tracking-wider mb-2">{{ product.tagline ?? product.name }}</h3>
-                        <p class="text-stone-600 font-light text-sm">{{ product.description }}</p>
+                        <p class="text-stone-600 font-light text-sm mb-4">{{ product.description }}</p>
+                        <button v-if="product.price" @click="add(product)"
+                            class="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-medium uppercase tracking-widest transition-colors"
+                            :class="justAdded.has(product.id) ? 'bg-green-600 text-white' : 'bg-stone-900 hover:bg-orange-600 text-white'">
+                            <svg v-if="justAdded.has(product.id)" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m-10 0a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                            {{ justAdded.has(product.id) ? 'Agregado' : 'Agregar' }}
+                        </button>
                     </div>
                 </div>
             </div>

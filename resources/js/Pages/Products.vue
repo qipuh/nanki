@@ -1,8 +1,10 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
+import { reactive } from 'vue';
 import AppLayout from '../Layouts/AppLayout.vue';
 import ProductSearch from '../Components/ProductSearch.vue';
 import KeneMotif from '../Components/KeneMotif.vue';
+import { addToCart } from '../cart';
 
 defineOptions({ layout: AppLayout })
 
@@ -13,6 +15,14 @@ defineProps({
         default: '',
     },
 });
+
+const justAdded = reactive(new Set());
+
+const add = (product) => {
+    addToCart(product);
+    justAdded.add(product.id);
+    setTimeout(() => justAdded.delete(product.id), 1500);
+};
 </script>
 
 <template>
@@ -62,7 +72,15 @@ defineProps({
                     <div class="p-6 flex-1 flex flex-col">
                         <p v-if="product.tagline" class="text-orange-600 text-xs font-semibold uppercase tracking-[0.15em] mb-1.5">{{ product.tagline }}</p>
                         <h3 class="text-lg font-bold text-black tracking-wide mb-2">{{ product.name }}</h3>
-                        <p v-if="product.description" class="text-stone-600 font-light text-sm leading-relaxed">{{ product.description }}</p>
+                        <p v-if="product.description" class="text-stone-600 font-light text-sm leading-relaxed flex-1">{{ product.description }}</p>
+
+                        <button v-if="product.price" @click="add(product)"
+                            class="mt-4 w-full flex items-center justify-center gap-2 py-2.5 text-sm font-medium uppercase tracking-widest transition-colors"
+                            :class="justAdded.has(product.id) ? 'bg-green-600 text-white' : 'bg-stone-900 hover:bg-orange-600 text-white'">
+                            <svg v-if="justAdded.has(product.id)" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m-10 0a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                            {{ justAdded.has(product.id) ? 'Agregado' : 'Agregar' }}
+                        </button>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,11 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
 import { ref, computed, onMounted, onUnmounted, provide } from 'vue';
+import { cartCount } from '../cart';
+import CartDrawer from '../Components/CartDrawer.vue';
 
 const isMenuOpen = ref(false);
+const isCartOpen = ref(false);
 const scrolled = ref(false);
 const page = usePage();
 
@@ -91,10 +94,27 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
                         <Link href="/contacto"
                             class="ml-2 px-5 py-2 rounded-md text-base font-medium tracking-wide border transition-colors"
                             :class="navSolid ? 'border-orange-600 text-orange-600 hover:bg-orange-600 hover:text-white' : 'border-white text-white hover:bg-white hover:text-stone-900'">Contacto</Link>
+
+                        <button @click="isCartOpen = true" aria-label="Ver carrito"
+                            class="relative ml-1 p-2 rounded-md transition-colors"
+                            :class="navSolid ? 'text-stone-700 hover:bg-stone-100' : 'text-white hover:bg-white/10'">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m-10 0a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                            <span v-if="cartCount > 0" class="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 min-w-[18px] flex items-center justify-center rounded-full bg-orange-500 text-white text-[10px] font-bold px-1">
+                                {{ cartCount }}
+                            </span>
+                        </button>
                     </div>
 
                     <!-- Mobile menu button -->
-                    <div class="flex items-center md:hidden">
+                    <div class="flex items-center gap-1 md:hidden">
+                        <button @click="isCartOpen = true" aria-label="Ver carrito"
+                            class="relative p-2 rounded-md transition-colors"
+                            :class="navSolid ? 'text-stone-700 hover:bg-stone-100' : 'text-white hover:bg-white/10'">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m-10 0a2 2 0 100 4 2 2 0 000-4zm10 0a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                            <span v-if="cartCount > 0" class="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 min-w-[18px] flex items-center justify-center rounded-full bg-orange-500 text-white text-[10px] font-bold px-1">
+                                {{ cartCount }}
+                            </span>
+                        </button>
                         <button @click="toggleMenu" type="button" class="inline-flex items-center justify-center p-2 rounded-md transition-colors"
                             :class="navSolid ? 'text-stone-700 hover:bg-stone-100' : 'text-white hover:bg-white/10'">
                             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -179,5 +199,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll));
             <!-- Bottom decorative border -->
             <div class="h-3 w-full bg-orange-600" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px);"></div>
         </footer>
+
+        <CartDrawer :open="isCartOpen" @close="isCartOpen = false" />
     </div>
 </template>

@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
             'site' => [
                 'name' => Setting::get('site_name', 'Nanki'),
                 'logo' => Setting::get('site_logo'),
+                'whatsapp' => Setting::get('whatsapp_number'),
             ],
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
